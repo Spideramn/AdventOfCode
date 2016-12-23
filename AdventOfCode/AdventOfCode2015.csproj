@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8C714D27-443A-4B7F-AB29-C6B77432C5E1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdventOfCode</RootNamespace>
+    <AssemblyName>AdventOfCode</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Days\Day.cs" />
+    <Compile Include="Days\Day01.cs" />
+    <Compile Include="Days\Day02.cs" />
+    <Compile Include="Days\Day03.cs" />
+    <Compile Include="Days\Day04.cs" />
+    <Compile Include="Days\Day05.cs" />
+    <Compile Include="Days\Day06.cs" />
+    <Compile Include="Days\Day07.cs" />
+    <Compile Include="Days\Day07.Instruction.cs" />
+    <Compile Include="Days\Day07.InstructionSet.cs" />
+    <Compile Include="Days\Day07.Operation.cs" />
+    <Compile Include="Days\Day08.cs" />
+    <Compile Include="Days\Day09.cs" />
+    <Compile Include="Days\Day10.cs" />
+    <Compile Include="Days\Day11.cs" />
+    <Compile Include="Days\Day12.cs" />
+    <Compile Include="Days\Day13.cs" />
+    <Compile Include="Days\Day14.cs" />
+    <Compile Include="Days\Day15.cs" />
+    <Compile Include="Days\Day16.cs" />
+    <Compile Include="Days\Day17.cs" />
+    <Compile Include="Days\Day18.cs" />
+    <Compile Include="Days\Day19.cs" />
+    <Compile Include="Days\Day20.cs" />
+    <Compile Include="Days\Day21.cs" />
+    <Compile Include="Days\Day22.cs" />
+    <Compile Include="Days\Day23.cs" />
+    <Compile Include="Days\Day24.cs" />
+    <Compile Include="Days\Day25.cs" />
+    <Compile Include="Lib\IncrementalString.cs" />
+    <Compile Include="Lib\ListExtensions.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\InputDay1.txt" />
+    <Content Include="Resources\InputDay10.txt" />
+    <Content Include="Resources\InputDay11.txt" />
+    <Content Include="Resources\InputDay12.txt" />
+    <Content Include="Resources\InputDay13.txt" />
+    <Content Include="Resources\InputDay14.txt" />
+    <Content Include="Resources\InputDay15.txt" />
+    <Content Include="Resources\InputDay16.txt" />
+    <Content Include="Resources\InputDay17.txt" />
+    <Content Include="Resources\InputDay18.txt" />
+    <Content Include="Resources\InputDay19.txt" />
+    <Content Include="Resources\InputDay2.txt" />
+    <Content Include="Resources\InputDay20.txt" />
+    <Content Include="Resources\InputDay21.txt" />
+    <Content Include="Resources\InputDay22.txt" />
+    <Content Include="Resources\InputDay23.txt" />
+    <Content Include="Resources\InputDay24.txt" />
+    <Content Include="Resources\InputDay25.txt" />
+    <Content Include="Resources\InputDay3.txt" />
+    <Content Include="Resources\InputDay4.txt" />
+    <Content Include="Resources\InputDay5.txt" />
+    <Content Include="Resources\InputDay6.txt" />
+    <Content Include="Resources\InputDay7.txt" />
+    <Content Include="Resources\InputDay8.txt" />
+    <Content Include="Resources\InputDay9.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
