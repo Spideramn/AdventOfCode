@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using AdventOfCode2016.Lib;
 
 namespace AdventOfCode2016.Days
 {

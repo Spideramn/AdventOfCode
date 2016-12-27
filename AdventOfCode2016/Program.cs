@@ -2,75 +2,66 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using AdventOfCode2016.Days;
+using AdventOfCode2016.Lib;
 
 namespace AdventOfCode2016
 {
 	static class Program
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
-			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-			#region days
 			var days = new Day[]
 						   {
-							new Day01(Resources.InputDay01),
-							new Day02(Resources.InputDay02),
-							new Day03(Resources.InputDay03),
-							new Day04(Resources.InputDay04),
-							new Day05(Resources.InputDay05),
-							new Day06(Resources.InputDay06),
-							new Day07(Resources.InputDay07),
-							new Day08(Resources.InputDay08),
-							new Day09(Resources.InputDay09),
-							new Day10(Resources.InputDay10),
-							new Day11(Resources.InputDay11),
-							new Day12(Resources.InputDay12),
-							new Day13(Resources.InputDay13),
-							new Day14(Resources.InputDay14),
-							new Day15(Resources.InputDay15),
-							new Day16(Resources.InputDay16),
-							new Day17(Resources.InputDay17),
-							new Day18(Resources.InputDay18),
-							new Day19(Resources.InputDay19),
-							new Day20(Resources.InputDay20),
-							new Day21(Resources.InputDay21),
-							new Day22(Resources.InputDay22),
-							new Day23(Resources.InputDay23),
-							new Day24(Resources.InputDay24),
-							new Day25(Resources.InputDay25),
+							new Day01(ResourceManager.GetString("InputDay01")),
+							new Day02(ResourceManager.GetString("InputDay02")),
+							new Day03(ResourceManager.GetString("InputDay03")),
+							new Day04(ResourceManager.GetString("InputDay04")),
+							new Day05(ResourceManager.GetString("InputDay05")),
+							new Day06(ResourceManager.GetString("InputDay06")),
+							new Day07(ResourceManager.GetString("InputDay07")),
+							new Day08(ResourceManager.GetString("InputDay08")),
+							new Day09(ResourceManager.GetString("InputDay09")),
+							new Day10(ResourceManager.GetString("InputDay10")),
+							new Day11(ResourceManager.GetString("InputDay11")),
+							new Day12(ResourceManager.GetString("InputDay12")),
+							new Day13(ResourceManager.GetString("InputDay13")),
+							new Day14(ResourceManager.GetString("InputDay14")),
+							new Day15(ResourceManager.GetString("InputDay15")),
+							new Day16(ResourceManager.GetString("InputDay16")),
+							new Day17(ResourceManager.GetString("InputDay17")),
+							new Day18(ResourceManager.GetString("InputDay18")),
+							new Day19(ResourceManager.GetString("InputDay19")),
+							new Day20(ResourceManager.GetString("InputDay20")),
+							new Day21(ResourceManager.GetString("InputDay21")),
+							new Day22(ResourceManager.GetString("InputDay22")),
+							new Day23(ResourceManager.GetString("InputDay23")),
+							new Day24(ResourceManager.GetString("InputDay24")),
+							new Day25(ResourceManager.GetString("InputDay25")),
 						   };
-			#endregion
-
+		
 			Console.WriteLine(" * Advent of Code * ");
 			Console.WriteLine("====================");
 			Console.WriteLine("Processor count: {0}", Environment.ProcessorCount);
 			Console.WriteLine();
+
+			var defaultInput = Math.Min(DateTime.Now.Day, 25);
+			var input = args.FirstOrDefault();
 #if DEBUG
-			var first = true;
+			if (Debugger.IsAttached)
+				input = input ?? DateTime.Now.Day.ToString(CultureInfo.InvariantCulture);			
 #endif
 			while (true)
 			{
-				Console.Write("Enter day number 1-25 (q to quit) [{0}]: ", DateTime.Now.Day);
+				Console.Write("Enter day number 1-25 (q to quit) [{0}]: ", defaultInput);
 				var dayNumber = 0;
-#if DEBUG
-				string input;
-				if (Debugger.IsAttached && first)
-				{
-					input = DateTime.Now.Day.ToString(CultureInfo.InvariantCulture);
-					Console.WriteLine();
-				}
-				else
-				{
+				if(input == null)
 					input = Console.ReadLine();
-				}
-#else
-				var input = Console.ReadLine();
-#endif
+				else
+					Console.WriteLine();
+
 				if (string.IsNullOrEmpty(input))
-					dayNumber = DateTime.Now.Day;
+					dayNumber = defaultInput;
 				if (input == "q")
 					break;
 				if (dayNumber != 0 || int.TryParse(input, out dayNumber))
@@ -97,9 +88,11 @@ namespace AdventOfCode2016
 				else
 					Console.WriteLine("Invalid day");
 				Console.WriteLine();
+
+				input = null;
 #if DEBUG
 				if (Debugger.IsAttached)
-					first = false;
+					break;
 #endif
 			}
 		}

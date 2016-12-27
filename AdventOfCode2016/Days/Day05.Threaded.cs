@@ -43,7 +43,7 @@ namespace AdventOfCode2016.Days
 								}
 								for (var i = start; i < start + batchSize; i++)
 								{
-									var b = md5.ComputeHash(Encoding.Default.GetBytes(_input + i));
+									var b = md5.ComputeHash(Encoding.GetEncoding(0).GetBytes(_input + i));
 									if (b[0] == 0x00 && b[1] == 0x00 && b[2] <= 0x0F)
 										result.TryAdd(i, b[2].ToString("X2")[1]);
 								}
@@ -90,7 +90,7 @@ namespace AdventOfCode2016.Days
 							}
 							for (var i = start; i < start + batchSize; i++)
 							{
-								var b = md5.ComputeHash(Encoding.Default.GetBytes(_input + i));
+								var b = md5.ComputeHash(Encoding.GetEncoding(0).GetBytes(_input + i));
 								if (b[0] != 0 || b[1] != 0 || b[2] > 0x07)
 									continue;
 								result[b[2]].TryAdd(i, b[3].ToString("X2")[0]);

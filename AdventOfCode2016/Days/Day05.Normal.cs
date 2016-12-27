@@ -21,7 +21,7 @@ namespace AdventOfCode2016.Days
 				{
 					while (password.Length < 8)
 					{
-						var b = md5.ComputeHash(Encoding.Default.GetBytes(_input + i++));
+						var b = md5.ComputeHash(Encoding.GetEncoding(0).GetBytes(_input + i++));
 						if (b[0] == 0x00 && b[1] == 0x00 && b[2] <= 0x0F)
 							password += b[2].ToString("X2")[1];
 					}
@@ -37,7 +37,7 @@ namespace AdventOfCode2016.Days
 				{
 					while (c < 8)
 					{
-						var b = md5.ComputeHash(Encoding.Default.GetBytes(_input + i++));
+						var b = md5.ComputeHash(Encoding.GetEncoding(0).GetBytes(_input + i++));
 						if (b[0] != 0x00 || b[1] != 0x00 || b[2] > 0x07 || password[b[2]] != '\0')
 							continue;
 						password[b[2]] = b[3].ToString("X2")[0];
