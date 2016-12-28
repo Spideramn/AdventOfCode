@@ -150,10 +150,18 @@ namespace AdventOfCode2016.Days
 
 				// The start node is the first entry in the 'open' list
 				var path = new List<Point>();
-				var success = Search(_startNode);
-				if (!success)
-					return path;
 
+				var currentNode = _startNode;
+				while (currentNode.Location != _endNode.Location)
+				{
+					if (Search(currentNode))
+						break; // end node found
+					
+					currentNode = _nodes.Values.Where(n => n.State != NodeState.Closed && n.IsWalkable && n.ParentNode != null).OrderBy(n => n.F).FirstOrDefault(); // need to speed this up!
+					if (currentNode == null) // no path!
+						return path;
+				}
+				
 				// If a path was found, follow the parents from the end node to build a list of locations
 				var node = _endNode;
 				while (node.ParentNode != null)
@@ -186,16 +194,6 @@ namespace AdventOfCode2016.Days
 					if (nextNode.Location == _endNode.Location)
 						return true;
 				}
-
-				var node = _nodes.Values.Where(n => n.State != NodeState.Closed && n.IsWalkable && n.ParentNode != null).OrderBy(n => n.F).First();
-				if (node.Location == _endNode.Location)
-					return true;
-
-				// If not, check the next set of nodes
-				if (Search(node)) // Note: Recurses back into Search(Node)
-					return true;
-
-				// The method returns false if this path leads to be a dead end
 				return false;
 			}
 
