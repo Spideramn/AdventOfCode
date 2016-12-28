@@ -89,8 +89,7 @@ namespace AdventOfCode2016.Days
 			{
 				var routeLength = 0;
 				var from = start;
-				var r = new List<char>(route);
-				r.Add('0');
+				var r = new List<char>(route) {'0'};
 				foreach(var c in r)
 				{
 					var to = destinations[c];

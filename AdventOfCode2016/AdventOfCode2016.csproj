@@ -66,7 +66,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Days\Day.cs" />
@@ -102,49 +101,41 @@
     <Compile Include="Days\Day24.cs" />
     <Compile Include="Days\Day25.cs" />
     <Compile Include="Lib\Extensions.cs" />
+    <Compile Include="Lib\Point.cs" />
+    <Compile Include="Lib\ResourceManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\InputDay02.txt" />
-    <Content Include="Resources\InputDay01.txt" />
-    <Content Include="Resources\InputDay03.txt" />
-    <Content Include="Resources\InputDay04.txt" />
-    <Content Include="Resources\InputDay05.txt" />
-    <Content Include="Resources\InputDay06.txt" />
-    <Content Include="Resources\InputDay07.txt" />
-    <Content Include="Resources\InputDay08.txt" />
-    <Content Include="Resources\InputDay09.txt" />
-    <Content Include="Resources\InputDay10.txt" />
-    <Content Include="Resources\InputDay11.txt" />
-    <Content Include="Resources\InputDay12.txt" />
-    <Content Include="Resources\InputDay13.txt" />
-    <Content Include="Resources\InputDay14.txt" />
-    <Content Include="Resources\InputDay15.txt" />
-    <Content Include="Resources\InputDay16.txt" />
-    <Content Include="Resources\InputDay17.txt" />
-    <Content Include="Resources\InputDay18.txt" />
-    <Content Include="Resources\InputDay19.txt" />
-    <Content Include="Resources\InputDay20.txt" />
-    <Content Include="Resources\InputDay21.txt" />
-    <Content Include="Resources\InputDay22.txt" />
-    <Content Include="Resources\InputDay23.txt" />
-    <Content Include="Resources\InputDay24.txt" />
-    <Content Include="Resources\InputDay25.txt" />
+    <EmbeddedResource Include="Resources\InputDay02.txt" />
+    <EmbeddedResource Include="Resources\InputDay01.txt" />
+    <EmbeddedResource Include="Resources\InputDay03.txt" />
+    <EmbeddedResource Include="Resources\InputDay04.txt" />
+    <EmbeddedResource Include="Resources\InputDay05.txt" />
+    <EmbeddedResource Include="Resources\InputDay06.txt" />
+    <EmbeddedResource Include="Resources\InputDay07.txt" />
+    <EmbeddedResource Include="Resources\InputDay08.txt" />
+    <EmbeddedResource Include="Resources\InputDay09.txt" />
+    <EmbeddedResource Include="Resources\InputDay10.txt" />
+    <EmbeddedResource Include="Resources\InputDay11.txt" />
+    <EmbeddedResource Include="Resources\InputDay12.txt" />
+    <EmbeddedResource Include="Resources\InputDay13.txt" />
+    <EmbeddedResource Include="Resources\InputDay14.txt" />
+    <EmbeddedResource Include="Resources\InputDay15.txt" />
+    <EmbeddedResource Include="Resources\InputDay16.txt" />
+    <EmbeddedResource Include="Resources\InputDay17.txt" />
+    <EmbeddedResource Include="Resources\InputDay18.txt" />
+    <EmbeddedResource Include="Resources\InputDay19.txt" />
+    <EmbeddedResource Include="Resources\InputDay20.txt" />
+    <EmbeddedResource Include="Resources\InputDay21.txt" />
+    <EmbeddedResource Include="Resources\InputDay22.txt" />
+    <EmbeddedResource Include="Resources\InputDay23.txt" />
+    <EmbeddedResource Include="Resources\InputDay24.txt" />
+    <EmbeddedResource Include="Resources\InputDay25.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
