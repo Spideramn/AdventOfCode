@@ -125,6 +125,7 @@ namespace AdventOfCode2016.Days
 		{
 			private readonly char[][] _grid;
 			private Dictionary<Point, Node> _nodes;
+			private List<Node> _openNodes;
 			private Node _startNode;
 			private Node _endNode;
 
@@ -140,14 +141,15 @@ namespace AdventOfCode2016.Days
 			public List<Point> FindPath(Point startLocation, Point endLocation)
 			{
 				_nodes = new Dictionary<Point, Node>();
+				_openNodes = new List<Node>();
 
 				_startNode = new Node(startLocation, true, endLocation);
 				_startNode.State = NodeState.Open;
 				_nodes.Add(_startNode.Location, _startNode);
-
+				
 				_endNode = new Node(endLocation, true, endLocation);
 				_nodes.Add(_endNode.Location, _endNode);
-
+				
 				// The start node is the first entry in the 'open' list
 				var path = new List<Point>();
 
@@ -157,7 +159,7 @@ namespace AdventOfCode2016.Days
 					if (Search(currentNode))
 						break; // end node found
 					
-					currentNode = _nodes.Values.Where(n => n.State != NodeState.Closed && n.IsWalkable && n.ParentNode != null).OrderBy(n => n.F).FirstOrDefault(); // need to speed this up!
+					currentNode = _openNodes.OrderBy(n => n.F).FirstOrDefault(); // need to speed this up!
 					if (currentNode == null) // no path!
 						return path;
 				}
@@ -185,6 +187,7 @@ namespace AdventOfCode2016.Days
 			{
 				// Set the current node to Closed since it cannot be traversed more than once
 				currentNode.State = NodeState.Closed;
+				_openNodes.Remove(currentNode);
 
 				// Sort by F-value so that the shortest possible routes are considered first
 				var nextNodes = GetAdjacentWalkableNodes(currentNode).OrderBy(n => n.F).ToList();
@@ -247,6 +250,7 @@ namespace AdventOfCode2016.Days
 							// If it's untested, set the parent and flag it as 'Open' for consideration
 							node.ParentNode = fromNode;
 							node.State = NodeState.Open;
+							_openNodes.Add(node);
 							yield return node;
 							break;
 
