@@ -66,7 +66,11 @@ namespace AdventOfCode2016.Lib
 					if (curIndex < indices.Length - 1)
 						curIndex++;
 					else
-						yield return result;
+					{	
+						var ret = new T[result.Length];
+						Array.Copy(result, ret, result.Length);
+						yield return ret;
+					}
 				}
 			}
 		}

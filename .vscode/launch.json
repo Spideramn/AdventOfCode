@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceRoot}/AdventOfCode2016/bin/Debug/netcoreapp1.1/AdventOfCode2016.dll",
-            "args": ["23"],
+            "args": ["11"],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,
             "stopAtEntry": false,
