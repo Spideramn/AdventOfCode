@@ -42,14 +42,54 @@ namespace AdventOfCode2016.Days
 			PrintState(layout);
 			Console.WriteLine();
 
-			// so slow!
-			// Part 1: 47
-    		// 	in: 202.8001 seconds
+			var solver = new Solver();
+			return solver.Solve(layout);
+		}
+		public override object RunPart2()
+		{
+			var isotopes = new Dictionary<char, string>();
+			var matches = Regex.Matches(Input, @"([a-z]*)\sgenerator");
+			int i;
+			for (i = 0; i < matches.Count; i++)
+				isotopes.Add((char)(i + 65), matches[i].Groups[1].Value);
+			isotopes.Add((char)(i++ + 65), "elerium");
+			isotopes.Add((char)(i++ + 65), "dilithium");
+
+			var first = true;
+			var sb = new StringBuilder("1");
+			foreach (var line in Input.Split('\n').Select(l => l.Trim()))
+			{
+				var generators = Regex.Matches(line, @"([a-z]*)\sgenerator")
+					.Cast<Match>()
+					.Select(m => m.Groups[1].Value)
+					.ToList();
+				var microchips = Regex.Matches(line, @"([a-z]*)\-compatible")
+					.Cast<Match>()
+					.Select(m => m.Groups[1].Value)
+					.ToList();
+
+				if (first)
+				{
+					generators.AddRange(new [] { "elerium", "dilithium" });
+					microchips.AddRange(new[] { "elerium", "dilithium" });
+				}
+
+				foreach (var isotope in isotopes)
+				{
+					sb.Append(generators.Contains(isotope.Value) ? isotope.Key : '.');
+					sb.Append(microchips.Contains(isotope.Value) ? isotope.Key : '.');
+				}
+				first = false;
+			}
+			var layout = sb.ToString();
+			PrintState(layout);
+			Console.WriteLine();
 
 			var solver = new Solver();
 			return solver.Solve(layout);
 		}
-		
+
+
 		private class Solver
 		{
 			private Dictionary<string, Node> _nodes;
@@ -63,33 +103,21 @@ namespace AdventOfCode2016.Days
 				_nodes.Add(startNode.Layout, startNode);
 				_openNodes.Add(startNode);
 
-				Node currentNode = null;
-				while(_openNodes.Any())
+				var currentNode = startNode;
+				while (currentNode != null)
 				{
-					currentNode = _openNodes.OrderBy(n => n.F).FirstOrDefault(); // speed this up?
-
 					// process node
 					currentNode.State = NodeState.Closed;
 					_openNodes.Remove(currentNode);
 
 					// get possible moves
-					var nodes = GetAdjacentNodes(currentNode);
-					foreach(var node in nodes)
+					foreach(var node in GetAdjacentNodes(currentNode))
 					{
 						if(node.IsFinish)
-						{
-							var result = node.G;
-							var endNode = node;
-							while(endNode.ParentNode != null)
-							{
-								PrintState(endNode.Layout);
-								Console.WriteLine(endNode.H);
-								Console.WriteLine();
-								endNode = endNode.ParentNode;
-							}
-							return result;
-						}	
+							return node.G;
 					}
+
+					currentNode = _openNodes.OrderBy(n => n.G).FirstOrDefault(); // speed this up. Make sure Node.F is a valid number. doesnt make sense now...
 				}
 				return -1;
 			}
@@ -123,28 +151,30 @@ namespace AdventOfCode2016.Days
 					}
 				}
 			}
-			private IEnumerable<string> AdjacentLayouts(Node node)
+			private static IEnumerable<string> AdjacentLayouts(Node node)
 			{
 				var lineLength = (node.Layout.Length - 1) / Node.TotalFloors;
 				
 				var combinations = Enumerable.Range(0, lineLength).ToList().GetCombinations(2).ToList();
-
-
 				combinations.AddRange(Enumerable.Range(0, lineLength).Select(i => new []{i}));
+
 				var currentFloorIndex = 1+((node.Elevator-1)*lineLength);
-				var layouts = new HashSet<string>();
 
 				var otherFloors = new List<int>();
-
 				// can we go up?
 				if(node.Elevator < Node.TotalFloors)
 					otherFloors.Add(node.Elevator + 1);
+
 				// can we go down
-				if(node.Elevator > 1)
-					otherFloors.Add(node.Elevator - 1);
+				if (node.Elevator > 1)
+				{
+					// stop going down when all floors beneath are empty!
+					var floorsBeneath = node.Layout.Substring(1, lineLength * (node.Elevator - 1));
+					if (floorsBeneath.Any(c => c != '.'))
+						otherFloors.Add(node.Elevator - 1);
+				}
 				
 				// new floor locations
-				
 				foreach(var newFloor in otherFloors)
 				{
 					var newFloorIndex = 1+((newFloor-1)*lineLength);
@@ -152,6 +182,8 @@ namespace AdventOfCode2016.Days
 					foreach(var combo in combinations)
 					{
 						var valid = true;
+
+						// create new layout
 						var layout = node.Layout.ToCharArray();
 						layout[0] = (char)((newFloor)+'0');
 						foreach(var c in combo)
@@ -161,50 +193,40 @@ namespace AdventOfCode2016.Days
 								valid = false;
 								break;
 							}
-							else
-							{
-								layout[newFloorIndex+c] = layout[currentFloorIndex+c];
-								layout[currentFloorIndex+c] = '.';							
-							}
+							
+							layout[newFloorIndex+c] = layout[currentFloorIndex+c];
+							layout[currentFloorIndex + c] = '.';
 						}
-						
-						if(valid)
-							layouts.Add(new string(layout));
-					}
-				}
 
-				// validate layout
-				foreach(var l in layouts)
-				{
-					var isValid = true;
-					for(var floor = 0; floor < Node.TotalFloors; floor++)
-					{
-						var fl = l.Substring(1+(floor*lineLength), lineLength);
+						if (!valid)
+							continue;
 
-						// geen microchips, geen generator == OK
-						if (fl.All(e => e == '.'))
-							continue; 
-					
-						var generators = fl.Where((e,i) => i%2==0 && e != '.').ToList();
-						var microchips = fl.Where((e,i) => i%2!=0 && e != '.').ToList();
-
-						// is there microchip without its generator?
-						if(generators.Any())
+						// validate new floor layouts
+						var l = new string(layout);
+						foreach (var floor in new [] { newFloor-1 , node.Elevator-1 })
 						{
-							foreach(var m in microchips)
-							{
-								if(!generators.Contains(m))
-								{
-									isValid = false;
-									break;
-								}
-							}
+							var fl = l.Substring(1 + (floor * lineLength), lineLength);
+
+							// geen microchips, geen generator == OK
+							if (fl.All(e => e == '.'))
+								continue;
+
+							var generators = fl.Where((e, i) => i % 2 == 0 && e != '.').ToList();
+							var microchips = fl.Where((e, i) => i % 2 != 0 && e != '.').ToList();
+
+							// no generators == OK
+							// all microchips have a generator == ok
+							if (!generators.Any() || microchips.All(m => generators.Contains(m)))
+								continue;
+
+							valid = false;
+							break;
 						}
+
+
+						if(valid)
+							yield return l;
 					}
-					
-					if(isValid)
-						yield return l;
-					
 				}
 			}
 
@@ -233,7 +255,7 @@ namespace AdventOfCode2016.Days
 
 					IsFinish = IsFinished();
 				}
-				public bool IsFinish { get; private set; }
+				public bool IsFinish { get; }
 				public string Layout { get; }
 				public int Elevator { get; }
 				public string[] Floors { get; }
@@ -242,7 +264,7 @@ namespace AdventOfCode2016.Days
 				public int G { get; set; }
 				// from here to end (estimate)
 				public int H { get; private set; }
-				public int F => G + H;
+				public int F => -H;
 				public NodeState State { get; set; }
 
 				public Node ParentNode {get;set;}
@@ -250,14 +272,12 @@ namespace AdventOfCode2016.Days
 				private int CalculateH()
 				{
 					// estimate of how far we are away from the "finish"
-					var h = 0;
-					h += (TotalFloors - Elevator);
+					var floor4 = Floors[3].Count(c => c != '.');
+					var floor3 = Floors[2].Count(c => c != '.');
+					var floor2 = Floors[1].Count(c => c != '.');
+					var floor1 = Floors[0].Count(c => c != '.');
 
-					// skip latest floor
-					for(var floor = 0; floor < TotalFloors; floor++)
-						h += Floors[floor].ToCharArray().Count(c => c != '.') * (TotalFloors - floor + 1) * 3;
-
-					return -h; // higher number is closer
+					return floor4*5 + floor3*2 + floor2;//*2 + floor1;
 				}
 
 				private bool IsFinished()
@@ -301,11 +321,6 @@ namespace AdventOfCode2016.Days
 				}
 				Console.WriteLine();
 			}
-		}
-
-		public override object RunPart2()
-		{
-			return null;
 		}
 	}
 }
