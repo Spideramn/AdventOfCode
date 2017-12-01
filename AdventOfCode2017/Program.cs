@@ -90,12 +90,7 @@ namespace AdventOfCode2017
 				Console.WriteLine();
 
 				input = null;
-#if DEBUG
-				if (Debugger.IsAttached)
-					break;
-#endif
 			}
 		}
-
 	}
 }
