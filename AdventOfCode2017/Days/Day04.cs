@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace AdventOfCode2017.Days
 {
 	internal class Day04 : Day
@@ -9,12 +12,29 @@ namespace AdventOfCode2017.Days
 
 		public override object RunPart1()
 		{
-			return null;
+			return Input
+				.Split(Environment.NewLine)
+				.AsParallel()
+				.Count(line =>
+					!line
+						.Split(' ')
+						.GroupBy(w => w)
+						.Any(g => g.Count() > 1)
+				);
 		}
 
 		public override object RunPart2()
 		{
-			return null;
+			return Input
+				.Split(Environment.NewLine)
+				.AsParallel()
+				.Count(line =>
+					!line
+						.Split(' ')
+						.Select(w => new string(w.OrderBy(c => c).ToArray()))
+						.GroupBy(w => w)
+						.Any(g => g.Count() > 1)
+				);
 		}
 	}
 }
