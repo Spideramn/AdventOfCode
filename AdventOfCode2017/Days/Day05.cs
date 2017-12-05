@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace AdventOfCode2017.Days
 {
 	internal class Day05 : Day
@@ -9,12 +12,31 @@ namespace AdventOfCode2017.Days
 
 		public override object RunPart1()
 		{
-			return null;
+			var steps = 0;
+			var pos = 0;
+			var instructions = Input.Split(Environment.NewLine).Select(int.Parse).ToArray();
+			while (pos < instructions.Length)
+			{
+				steps++;
+				pos += instructions[pos]++;
+			}
+			return steps;
 		}
 
 		public override object RunPart2()
 		{
-			return null;
+			var steps = 0;
+			var pos = 0;
+			var instructions = Input.Split(Environment.NewLine).Select(int.Parse).ToArray();
+			while (pos < instructions.Length)
+			{
+				steps++;
+				if (instructions[pos] >= 3)
+					pos += instructions[pos]--;
+				else
+					pos += instructions[pos]++;
+			}
+			return steps;
 		}
 	}
 }
