@@ -7,18 +7,18 @@ namespace AdventOfCode2017.Days
 	internal class Day06 : Day
 	{
 		public Day06(string input)
-			: base(06, input)//"0\t2\t7\t0")
+			: base(06, input)
 		{
 		}
 
 		public override object RunPart1()
 		{
-			var steps = 0;
-			var knownStates = new HashSet<int>();
+			var cycles = 0;
+			var knownStates = new HashSet<string>();
 			var state = Input.Split('\t').Select(int.Parse).ToArray();
-			while (true)
+			do
 			{
-				steps++;
+				cycles++;
 				var max = state.Max();
 				var index = Array.IndexOf(state, max);
 				state[index] = 0;
@@ -29,22 +29,15 @@ namespace AdventOfCode2017.Days
 					state[index]++;
 					max--;
 				}
-				
-				var stateHash = 0;
-				foreach (var i in state)
-					stateHash = (stateHash + i) * 10;
-				
-				if (knownStates.Contains(stateHash))
-					return steps;
-				knownStates.Add(stateHash);
-			}
+			} while (knownStates.Add(string.Join(',', state)));
+			return cycles;
 		}
 
 		public override object RunPart2()
 		{
 			var first = true;
 			var steps = 0;
-			var knownStates = new HashSet<int>();
+			var knownStates = new HashSet<string>();
 			var state = Input.Split('\t').Select(int.Parse).ToArray();
 			while (true)
 			{
@@ -60,10 +53,7 @@ namespace AdventOfCode2017.Days
 					max--;
 				}
 
-				var stateHash = 0;
-				foreach (var i in state)
-					stateHash = (stateHash + i) * 10;
-
+				var stateHash = string.Join(',', state);
 				if (knownStates.Contains(stateHash))
 				{
 					if (!first)
