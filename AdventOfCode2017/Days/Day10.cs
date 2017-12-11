@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace AdventOfCode2017.Days
@@ -15,19 +14,19 @@ namespace AdventOfCode2017.Days
 			var curPos = 0;
 			var skip = 0;
 			var list = Enumerable.Range(0, 256).ToArray();
-			foreach (var length in Input.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse))
+			foreach (var length in Input.Split(',').Select(int.Parse))
 			{
 				var left = curPos;
 				var right = curPos + length - 1;
 				while (left < right)
 				{
-					var t = list[left % 256];
+					var tLeft = list[left % 256];
 					list[left % 256] = list[right % 256];
-					list[right % 256] = t;
+					list[right % 256] = tLeft;
 					left++;
 					right--;
 				}
-				curPos += length + skip++;
+				curPos = (curPos + length + skip++) % 256;
 			}
 			return list[0] * list[1];
 		}
@@ -37,8 +36,7 @@ namespace AdventOfCode2017.Days
 			var curPos = 0;
 			var skip = 0;
 			var list = Enumerable.Range(0, 256).ToArray();
-			var input = Input.Select(c => (int)c).ToList();
-			input.AddRange(new[] {17, 31, 73, 47, 23});
+			var input = Input.Select(c => (int)c).Concat(new[] { 17, 31, 73, 47, 23 }).ToArray();
 			for (var round = 0; round < 64; round++)
 			{
 				foreach (var length in input)
@@ -47,28 +45,25 @@ namespace AdventOfCode2017.Days
 					var right = curPos + length - 1;
 					while (left < right)
 					{
-						var t = list[left % 256];
+						var tLeft = list[left % 256];
 						list[left % 256] = list[right % 256];
-						list[right % 256] = t;
+						list[right % 256] = tLeft;
 						left++;
 						right--;
 					}
-					curPos += length + skip++;
+					curPos = (curPos + length + skip++) % 256;
 				}
 			}
 
 			var hash = "";
-			var temp = 0;
-			for (var index = 0; index < list.Length; index++)
+			for (var index = 0; index < list.Length; index += 16)
 			{
-				if (index != 0 && index % 16 == 0)
-				{
-					hash += temp.ToString("x2");
-					temp = 0;
-				}
-				temp ^= list[index];
+				var temp = 0;
+				for (var i = 0; i < 16; i++)
+					temp ^= list[index + i];
+				hash += temp.ToString("x2");
 			}
-			return hash + temp.ToString("x2"); 
+			return hash;
 		}
 	}
 }
