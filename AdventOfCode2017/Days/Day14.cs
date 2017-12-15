@@ -90,10 +90,9 @@ namespace AdventOfCode2017.Days
 				var temp = 0;
 				for (var i = 0; i < 16; i++)
 					temp ^= list[index + i];
-				hash += temp.ToString("X2");
+				hash += Convert.ToString(temp / 0x10, 2).PadLeft(4, '0') + Convert.ToString(temp % 0x10, 2).PadLeft(4, '0');
 			}
-
-			return hash.Select(c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')).SelectMany(c => c);
+			return hash;
 		}
 	}
 }
