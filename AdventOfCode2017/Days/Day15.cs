@@ -22,12 +22,9 @@ namespace AdventOfCode2017.Days
 			var count = 0;
 			for (var i = 0; i < 40000000; i++)
 			{
-				startA = ((startA * 16807L) % 2147483647L);
-				startB = ((startB * 48271L) % 2147483647L);
-
-				var a = BitConverter.GetBytes(startA);
-				var b = BitConverter.GetBytes(startB);
-				if (a[0] == b[0] && a[1] == b[1])
+				startA = (startA * 16807L) % 2147483647L;
+				startB = (startB * 48271L) % 2147483647L;
+				if ((startA & 0xFFFF) == (startB & 0xFFFF))
 					count++;
 			}
 			return count;
@@ -42,23 +39,20 @@ namespace AdventOfCode2017.Days
 			var count = 0;
 			for (var i = 0; i < 5000000; i++)
 			{
-				startA = GetValue(startA, 16807L, 2147483647L, 4);
-				startB = GetValue(startB, 48271L, 2147483647L, 8);
-				var a = BitConverter.GetBytes(startA);
-				var b = BitConverter.GetBytes(startB);
-				if (a[0]==b[0] && a[1]==b[1])
+				do
+				{
+					startA = (startA * 16807L) % 2147483647L;
+				} while (startA %4 != 0);
+
+				do
+				{
+					startB = (startB * 48271L) % 2147483647L;
+				} while (startB % 8 != 0L);
+
+				if ((startA & 0xFFFF) == (startB & 0xFFFF))
 					count++;
 			}
 			return count;
-		}
-
-		private static long GetValue(long start, long factor, long remainder, int multiple)
-		{
-			do
-			{
-				start = ((start * factor) % remainder);
-			} while (start % multiple != 0);
-			return start;
 		}
 	}
 }
