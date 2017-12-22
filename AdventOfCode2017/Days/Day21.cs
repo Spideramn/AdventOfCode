@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AdventOfCode2017.Days
 {
@@ -50,13 +52,8 @@ namespace AdventOfCode2017.Days
 		public override object RunPart2()
 		{
 			var rules = Input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Select(line => new Rule(line)).ToList();
-			var image = new[]
-			{
-				new[] {'.', '#', '.'},
-				new[] {'.', '.', '#'},
-				new[] {'#', '#', '#'}
-			};
-
+			var image = new[] {new[] {'.', '#', '.'}, new[] {'.', '.', '#'}, new[] {'#', '#', '#'}};
+			var ruleCache = new ConcurrentDictionary<string, char[][]>();
 			for (var iteration = 0; iteration < 18; iteration++)
 			{
 				var n = image.Length % 2 == 0 ? 2 : 3;
@@ -65,21 +62,24 @@ namespace AdventOfCode2017.Days
 				for (var i = 0; i < newImage.Length; i++)
 					newImage[i] = new char[newImage.Length];
 
-				// for loop to parallel
-				for (var part1 = 0; part1 < parts; part1++)
-				for (var part2 = 0; part2 < parts; part2++)
+				var image1 = image; // resharper -> modified closure
+				Parallel.For(0, parts, part1 =>
 				{
-					var gridPart = new char[n][];
-					for (var i = 0; i < gridPart.Length; i++)
+					for (var part2 = 0; part2 < parts; part2++)
 					{
-						gridPart[i] = new char[gridPart.Length];
-						Array.Copy(image[part1 * n + i], part2 * n, gridPart[i], 0, n);
-					}
-					var permutations = GetPermutations(gridPart);
-					var replacement = rules.First(r => r.Matches(permutations)).Output;
+						var gridPart = new char[n][];
+						for (var i = 0; i < gridPart.Length; i++)
+						{
+							gridPart[i] = new char[gridPart.Length];
+							Array.Copy(image1[part1 * n + i], part2 * n, gridPart[i], 0, n);
+						}
+
+						var key = string.Join("|", gridPart.Select(c => new string(c)));
+						var replacement = ruleCache.GetOrAdd(key, s => rules.First(r => r.Matches(GetPermutations(gridPart))).Output); // <- could also add all permutations...
 						for (var i = 0; i < n + 1; i++)
-						Array.Copy(replacement[i], 0, newImage[part1 * (n + 1) + i], part2 * (n + 1), n + 1);
-				}
+							Array.Copy(replacement[i], 0, newImage[part1 * (n + 1) + i], part2 * (n + 1), n + 1);
+					}
+				});
 				image = newImage;
 			}
 			return image.Sum(c => c.Count(c2 => c2 == '#'));
