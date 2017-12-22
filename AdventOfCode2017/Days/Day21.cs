@@ -23,51 +23,26 @@ namespace AdventOfCode2017.Days
 			
 			for (var iteration = 0; iteration < 5; iteration++)
 			{
-				if (image.Length % 2 == 0)
+				var n = image.Length % 2 == 0 ? 2 : 3;
+				var parts = image.Length / n;
+				var newImage = new char[parts * (n+1)][];
+				for (var i = 0; i < newImage.Length; i++)
+					newImage[i] = new char[newImage.Length];
+				for (var part1 = 0; part1 < parts; part1++)
+				for (var part2 = 0; part2 < parts; part2++)
 				{
-					var parts = image.Length / 2;
-					var newImage = new char[parts * 3][];
-					for (var i = 0; i < newImage.Length; i++)
-						newImage[i] = new char[newImage.Length];
-					for (var part1 = 0; part1 < parts; part1++)
-					for (var part2 = 0; part2 < parts; part2++)
+					var gridPart = new char[n][];
+					for (var i = 0; i < gridPart.Length; i++)
 					{
-						var gridPart = new char[2][];
-						gridPart[0] = image[part1 * 2 + 0].Skip(part2 * 2).Take(2).ToArray();
-						gridPart[1] = image[part1 * 2 + 1].Skip(part2 * 2).Take(2).ToArray();
-
-						var permutations = GetPermutations(gridPart);
-						var replacement = rules.First(r => permutations.Any(r.Matches)).Output;
-						Array.Copy(replacement[0], 0, newImage[part1 * 3 + 0], part2 * 3, 3);
-						Array.Copy(replacement[1], 0, newImage[part1 * 3 + 1], part2 * 3, 3);
-						Array.Copy(replacement[2], 0, newImage[part1 * 3 + 2], part2 * 3, 3);
+						gridPart[i] = new char[gridPart.Length];
+						Array.Copy(image[part1 * n + i], part2 * n, gridPart[i], 0, n);
 					}
-					image = newImage;
+					var permutations = GetPermutations(gridPart);
+					var replacement = rules.First(r => r.Matches(permutations)).Output;
+					for (var i = 0; i < n + 1; i++)
+						Array.Copy(replacement[i], 0, newImage[part1 * (n + 1) + i], part2 * (n + 1), n + 1);
 				}
-				else if (image.Length % 3 == 0)
-				{
-					var parts = image.Length / 3;
-					var newImage = new char[parts * 4][];
-					for (var i = 0; i < newImage.Length; i++)
-						newImage[i] = new char[newImage.Length];
-
-					for (var part1 = 0; part1 < parts; part1++)
-					for (var part2 = 0; part2 < parts; part2++)
-					{
-						var gridPart = new char[3][];
-						gridPart[0] = image[part1 * 3 + 0].Skip(part2 * 3).Take(3).ToArray();
-						gridPart[1] = image[part1 * 3 + 1].Skip(part2 * 3).Take(3).ToArray();
-						gridPart[2] = image[part1 * 3 + 2].Skip(part2 * 3).Take(3).ToArray();
-
-						var permutations = GetPermutations(gridPart);
-						var replacement = rules.First(r => permutations.Any(r.Matches)).Output;
-						Array.Copy(replacement[0], 0, newImage[part1 * 4 + 0], part2 * 4, 4);
-						Array.Copy(replacement[1], 0, newImage[part1 * 4 + 1], part2 * 4, 4);
-						Array.Copy(replacement[2], 0, newImage[part1 * 4 + 2], part2 * 4, 4);
-						Array.Copy(replacement[3], 0, newImage[part1 * 4 + 3], part2 * 4, 4);
-					}
-					image = newImage;
-				}
+				image = newImage;
 			}
 			return image.Sum(c => c.Count(c2 => c2 == '#'));
 		}
@@ -84,59 +59,34 @@ namespace AdventOfCode2017.Days
 
 			for (var iteration = 0; iteration < 18; iteration++)
 			{
-				if (image.Length % 2 == 0)
+				var n = image.Length % 2 == 0 ? 2 : 3;
+				var parts = image.Length / n;
+				var newImage = new char[parts * (n + 1)][];
+				for (var i = 0; i < newImage.Length; i++)
+					newImage[i] = new char[newImage.Length];
+
+				// for loop to parallel
+				for (var part1 = 0; part1 < parts; part1++)
+				for (var part2 = 0; part2 < parts; part2++)
 				{
-					var parts = image.Length / 2;
-					var newImage = new char[parts * 3][];
-					for (var i = 0; i < newImage.Length; i++)
-						newImage[i] = new char[newImage.Length];
-					for (var part1 = 0; part1 < parts; part1++)
-						for (var part2 = 0; part2 < parts; part2++)
-						{
-							var gridPart = new char[2][];
-							gridPart[0] = image[part1 * 2 + 0].Skip(part2 * 2).Take(2).ToArray();
-							gridPart[1] = image[part1 * 2 + 1].Skip(part2 * 2).Take(2).ToArray();
-
-							var permutations = GetPermutations(gridPart);
-							var replacement = rules.First(r => permutations.Any(r.Matches)).Output;
-							Array.Copy(replacement[0], 0, newImage[part1 * 3 + 0], part2 * 3, 3);
-							Array.Copy(replacement[1], 0, newImage[part1 * 3 + 1], part2 * 3, 3);
-							Array.Copy(replacement[2], 0, newImage[part1 * 3 + 2], part2 * 3, 3);
-						}
-					image = newImage;
+					var gridPart = new char[n][];
+					for (var i = 0; i < gridPart.Length; i++)
+					{
+						gridPart[i] = new char[gridPart.Length];
+						Array.Copy(image[part1 * n + i], part2 * n, gridPart[i], 0, n);
+					}
+					var permutations = GetPermutations(gridPart);
+					var replacement = rules.First(r => r.Matches(permutations)).Output;
+						for (var i = 0; i < n + 1; i++)
+						Array.Copy(replacement[i], 0, newImage[part1 * (n + 1) + i], part2 * (n + 1), n + 1);
 				}
-				else if (image.Length % 3 == 0)
-				{
-					var parts = image.Length / 3;
-					var newImage = new char[parts * 4][];
-					for (var i = 0; i < newImage.Length; i++)
-						newImage[i] = new char[newImage.Length];
-
-					for (var part1 = 0; part1 < parts; part1++)
-						for (var part2 = 0; part2 < parts; part2++)
-						{
-							var gridPart = new char[3][];
-							gridPart[0] = image[part1 * 3 + 0].Skip(part2 * 3).Take(3).ToArray();
-							gridPart[1] = image[part1 * 3 + 1].Skip(part2 * 3).Take(3).ToArray();
-							gridPart[2] = image[part1 * 3 + 2].Skip(part2 * 3).Take(3).ToArray();
-
-							var permutations = GetPermutations(gridPart);
-							var replacement = rules.First(r => permutations.Any(r.Matches)).Output;
-							Array.Copy(replacement[0], 0, newImage[part1 * 4 + 0], part2 * 4, 4);
-							Array.Copy(replacement[1], 0, newImage[part1 * 4 + 1], part2 * 4, 4);
-							Array.Copy(replacement[2], 0, newImage[part1 * 4 + 2], part2 * 4, 4);
-							Array.Copy(replacement[3], 0, newImage[part1 * 4 + 3], part2 * 4, 4);
-						}
-					image = newImage;
-				}
+				image = newImage;
 			}
 			return image.Sum(c => c.Count(c2 => c2 == '#'));
 		}
 
 		private static List<char[][]> GetPermutations(char[][] a)
 		{
-			// id, rot90, rot180, rot270, 
-			// flipX, flipX after rot90, flipX after rot180, flipX after rot270
 			var result = new List<char[][]>();
 			result.Add(Clone(a));
 
@@ -181,18 +131,18 @@ namespace AdventOfCode2017.Days
 		private static void Rotate(char[][] a)
 		{
 			var n = a.Length;
-			for (int i = 0; i < n; i += 1)
+			for (var i = 0; i < n; i += 1)
 			{
-				for (int j = i + 1; j < n; j += 1)
+				for (var j = i + 1; j < n; j += 1)
 				{
 					var t = a[i][j];
 					a[i][j] = a[j][i];
 					a[j][i] = t;
 				}
 			}
-			for (int i = 0; i < n; i += 1)
+			for (var i = 0; i < n; i += 1)
 			{
-				for (int j = 0; j < n / 2; j += 1)
+				for (var j = 0; j < n / 2; j += 1)
 				{
 					var t = a[i][j];
 					a[i][j] = a[i][n - 1 - j];
@@ -203,9 +153,9 @@ namespace AdventOfCode2017.Days
 		private static void Flip(char[][] a)
 		{
 			var n = a.Length;
-			for (int i = 0; i < n; i += 1)
+			for (var i = 0; i < n; i += 1)
 			{
-				for (int j = 0; j < n / 2; j += 1)
+				for (var j = 0; j < n / 2; j += 1)
 				{
 					var t = a[i][j];
 					a[i][j] = a[i][n - 1 - j];
@@ -218,24 +168,39 @@ namespace AdventOfCode2017.Days
 		{
 			public char[][] Output { get; }
 			private readonly char[][] _input;
+			private readonly int _pixelCount;
 
 			public Rule(string line)
 			{
 				var parts = line.Split(" => ");
 				_input = parts[0].Split('/').Select(s => s.ToCharArray()).ToArray();
+				_pixelCount = _input.Sum(c => c.Count(c2 => c2 == '#'));
 				Output = parts[1].Split('/').Select(s => s.ToCharArray()).ToArray();
 			}
-
-			public bool Matches(char[][] grid)
+			public bool Matches(List<char[][]> grids)
 			{
-				if (grid.Length != _input.Length)
+				var grid1 = grids[0];
+				if (grid1.Length != _input.Length)
 					return false;
-				for (var i = 0; i < grid.Length; i++)
+
+				if (grid1.Sum(c => c.Count(c2 => c2 == '#')) != _pixelCount)
+					return false;
+
+				foreach (var grid in grids)
 				{
-					if (!grid[i].SequenceEqual(_input[i]))
-						return false;
+					var correct = true;
+					for (var i = 0; i < grid.Length; i++)
+					{
+						if (!grid[i].SequenceEqual(_input[i]))
+						{
+							correct = false;
+							break;
+						}
+					}
+					if (correct)
+						return true;
 				}
-				return true;
+				return false;
 			}
 		}
 	}
