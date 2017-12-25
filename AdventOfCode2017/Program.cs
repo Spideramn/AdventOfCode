@@ -36,7 +36,7 @@ namespace AdventOfCode2017
 				new Day22(Resources.InputDay22),
 				new Day23(Resources.InputDay23),
 				new Day24(Resources.InputDay24),
-				new Day25(Resources.InputDay25),
+				new Day25(Resources.InputDay25)
 				
 			};
 
