@@ -80,7 +80,6 @@ namespace AdventOfCode2017.Days
 		public override object RunPart2()
 		{
 			long a = 1, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0;
-
 			b = 67;
 			c = b;
 			if (a != 0)
@@ -95,34 +94,32 @@ namespace AdventOfCode2017.Days
 			{
 				f = 1;
 				d = 2;
-				// --- todo: optimize this part..
 				do
 				{
 					e = 2;
 					do
 					{
-						g = d;
-						g *= e;
-						g -= b;
-						if (g != 0)
+						if (d * e == b)
+						{
 							f = 0;
+							break;
+						}
 						e += 1;
-						g = e;
-						g -= b;
-					} while (g != 0);
-
+					} while (e != b);
+					if (f == 0)
+						break;
 					d += 1;
-					g = d;
-					g -= b;
-				} while (g != 0);
-				// ---
+				} while (d != b);
+
+				Console.Write(f);
 				if (f == 0)
 					h += 1;
-				g = b;
-				g -= c;
+
+				g = b - c;
 				b += 17;
 			} while (g != 0);
 
+			Console.WriteLine();
 			return h;
 		}
 	}
