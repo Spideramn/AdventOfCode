@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <StartupObject>AdventOfCode2018.Program</StartupObject>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Days\Day01\Input.txt" />
+    <None Remove="Days\Day02\Input.txt" />
+    <None Remove="Days\Day03\Input.txt" />
+    <None Remove="Days\Day04\Input.txt" />
+    <None Remove="Days\Day05\Input.txt" />
+    <None Remove="Days\Day06\Input.txt" />
+    <None Remove="Days\Day07\Input.txt" />
+    <None Remove="Days\Day08\Input.txt" />
+    <None Remove="Days\Day09\Input.txt" />
+    <None Remove="Days\Day10\Input.txt" />
+    <None Remove="Days\Day11\Input.txt" />
+    <None Remove="Days\Day12\Input.txt" />
+    <None Remove="Days\Day13\Input.txt" />
+    <None Remove="Days\Day14\Input.txt" />
+    <None Remove="Days\Day15\Input.txt" />
+    <None Remove="Days\Day16\Input.txt" />
+    <None Remove="Days\Day17\Input.txt" />
+    <None Remove="Days\Day18\Input.txt" />
+    <None Remove="Days\Day19\Input.txt" />
+    <None Remove="Days\Day20\Input.txt" />
+    <None Remove="Days\Day21\Input.txt" />
+    <None Remove="Days\Day22\Input.txt" />
+    <None Remove="Days\Day23\Input.txt" />
+    <None Remove="Days\Day24\Input.txt" />
+    <None Remove="Days\Day25\Input.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Days\Day01\Input.txt" />
+    <EmbeddedResource Include="Days\Day02\Input.txt" />
+    <EmbeddedResource Include="Days\Day03\Input.txt" />
+    <EmbeddedResource Include="Days\Day04\Input.txt" />
+    <EmbeddedResource Include="Days\Day05\Input.txt" />
+    <EmbeddedResource Include="Days\Day06\Input.txt" />
+    <EmbeddedResource Include="Days\Day07\Input.txt" />
+    <EmbeddedResource Include="Days\Day08\Input.txt" />
+    <EmbeddedResource Include="Days\Day09\Input.txt" />
+    <EmbeddedResource Include="Days\Day10\Input.txt" />
+    <EmbeddedResource Include="Days\Day11\Input.txt" />
+    <EmbeddedResource Include="Days\Day12\Input.txt" />
+    <EmbeddedResource Include="Days\Day13\Input.txt" />
+    <EmbeddedResource Include="Days\Day14\Input.txt" />
+    <EmbeddedResource Include="Days\Day15\Input.txt" />
+    <EmbeddedResource Include="Days\Day16\Input.txt" />
+    <EmbeddedResource Include="Days\Day17\Input.txt" />
+    <EmbeddedResource Include="Days\Day18\Input.txt" />
+    <EmbeddedResource Include="Days\Day19\Input.txt" />
+    <EmbeddedResource Include="Days\Day20\Input.txt" />
+    <EmbeddedResource Include="Days\Day21\Input.txt" />
+    <EmbeddedResource Include="Days\Day22\Input.txt" />
+    <EmbeddedResource Include="Days\Day23\Input.txt" />
+    <EmbeddedResource Include="Days\Day24\Input.txt" />
+    <EmbeddedResource Include="Days\Day25\Input.txt" />
+  </ItemGroup>
+
+</Project>
