@@ -8,8 +8,8 @@ namespace AdventOfCode2018.Days
 	{
 		public abstract int DayNumber { get; }
 
-		public virtual object RunPart1() => -1;
-		public virtual object RunPart2() => -1;
+		public virtual object RunPart1() => "NOTHING";
+		public virtual object RunPart2() => "NOTHING";
 
 		protected Stream GetInputStream()
 		{
