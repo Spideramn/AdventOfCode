@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Text;
 
 namespace AdventOfCode2018.Days.Day05
@@ -11,18 +13,21 @@ namespace AdventOfCode2018.Days.Day05
 		{
 			return React(new StringBuilder(GetInputString()));
 		}
-
+		
 		public override object RunPart2()
 		{
 			var input = GetInputString();
-			var shortest = input.Length;
-			for (var c = 'a'; c <= 'z'; c++)
-			{
-				var line = new StringBuilder(input);
-				line.Replace(c.ToString(), "").Replace(((char)(c+32)).ToString(), "");
-				shortest = Math.Min(React(line), shortest);
-			}
-			return shortest;
+			var lengths = new ConcurrentBag<int>();
+			Enumerable.Range('a', 26).AsParallel().ForAll(c => {
+				var line = new StringBuilder(input.Length);
+				foreach (var c2 in input)
+				{
+					if (c != c2 && c != c2 + 32)
+						line.Append(c2);
+				}
+				lengths.Add(React(line));
+			});
+			return lengths.Min();
 		}
 
 		private static int React(StringBuilder input)
