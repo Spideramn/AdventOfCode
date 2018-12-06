@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -21,8 +22,15 @@ namespace AdventOfCode2018.Days
 			using (TextReader txtReader = new StreamReader(inputStream))
 				return txtReader.ReadToEnd();
 		}
-		protected IEnumerable<string> GetInputLines()
+		protected IEnumerable<string> GetInputLines(string debugOverride = null)
 		{
+			if (debugOverride != null)
+			{
+				foreach (var line in debugOverride.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+					yield return line;
+				yield break;
+			}
+
 			using(var inputStream = GetInputStream())
 			using (TextReader txtReader = new StreamReader(inputStream))
 			{
