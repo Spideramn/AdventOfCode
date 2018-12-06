@@ -59,19 +59,18 @@ namespace AdventOfCode2018.Days.Day06
 		{
 			var coordinates = GetInputLines()
 				.Select(l => l.Split(", "))
-				.Select((p, i) => (Point: new Point(int.Parse(p[0]), int.Parse(p[1])), Index: (char)(i + 'A')))
-				.ToDictionary(x => x.Index, x => x.Point);
-
-			var xOffset = coordinates.Values.Min(c => c.X);
-			var yOffset = coordinates.Values.Min(c => c.Y);
-			foreach (var index in coordinates.Keys.ToList())
-				coordinates[index] = new Point(coordinates[index].X - xOffset, coordinates[index].Y - yOffset);
+				.Select(p => new Point(int.Parse(p[0]), int.Parse(p[1])))
+				.ToList();
 
 			var count = 0;
-			for (var x = 0; x < coordinates.Values.Max(c => c.X); x++)
-			for (var y = 0; y < coordinates.Values.Max(c => c.Y); y++)
+			var xMin = coordinates.Min(c => c.X);
+			var yMin = coordinates.Min(c => c.Y);
+			var xMax = coordinates.Max(c => c.X);
+			var yMax = coordinates.Max(c => c.Y);
+			for (var x = xMin; x < xMax; x++)
+			for (var y = yMin; y < yMax; y++)
 			{
-				if (coordinates.Sum(c => Math.Abs(c.Value.X - x) + Math.Abs(c.Value.Y - y)) < 10000)
+				if (coordinates.Sum(c => Math.Abs(c.X - x) + Math.Abs(c.Y - y)) < 10000)
 					count ++;
 			}
 			return count;
