@@ -15,14 +15,20 @@ namespace AdventOfCode2018.Days.Day06
 				.Select((p, i) => (Point: new Point(int.Parse(p[0]), int.Parse(p[1])), Index: (char)(i+'A')))
 				.ToDictionary(x => x.Index, x => x.Point);
 			
-			var xOffset = coordinates.Values.Min(c => c.X);
-			var yOffset = coordinates.Values.Min(c => c.Y);
-			foreach (var index in coordinates.Keys.ToList())
-				coordinates[index] = new Point(coordinates[index].X - xOffset, coordinates[index].Y - yOffset);
+			var xMin = coordinates.Values.Min(c => c.X);
+			var yMin = coordinates.Values.Min(c => c.Y);
+			var xMax = coordinates.Values.Max(c => c.X);
+			var yMax = coordinates.Values.Max(c => c.Y);
 			
-			var grid = new char[coordinates.Values.Max(c => c.X), coordinates.Values.Max(c => c.Y)];
-			for (var x = 0; x < grid.GetLength(0); x++)
-			for (var y = 0; y < grid.GetLength(1); y++)
+			foreach (var index in coordinates.Keys.ToList())
+				coordinates[index] = new Point(coordinates[index].X - xMin, coordinates[index].Y - yMin);
+
+			xMax -= xMin;
+			yMax -= yMin;
+
+			var grid = new char[xMax, yMax];
+			for (var x = 0; x < xMax; x++)
+			for (var y = 0; y < yMax; y++)
 			{
 				var closest = coordinates
 					.Select(c => (c.Key, Distance: Math.Abs(c.Value.X - x) + Math.Abs(c.Value.Y - y)))
