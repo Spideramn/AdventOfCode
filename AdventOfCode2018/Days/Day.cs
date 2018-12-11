@@ -12,13 +12,14 @@ namespace AdventOfCode2018.Days
 		public virtual object RunPart1() => "NOTHING";
 		public virtual object RunPart2() => "NOTHING";
 
-		protected Stream GetInputStream()
+		private static Assembly Assembly => typeof(Day).GetTypeInfo().Assembly;
+
+		protected string GetInputString(string debugOverride = null)
 		{
-			return typeof(Day).GetTypeInfo().Assembly.GetManifestResourceStream($"AdventOfCode2018.Days.Day{DayNumber:00}.Input.txt");
-		}
-		protected string GetInputString()
-		{
-			using (var inputStream = GetInputStream())
+			if (debugOverride != null)
+				return debugOverride;
+
+			using (var inputStream = Assembly.GetManifestResourceStream($"AdventOfCode2018.Days.Day{DayNumber:00}.Input.txt"))
 			using (TextReader txtReader = new StreamReader(inputStream))
 				return txtReader.ReadToEnd();
 		}
@@ -31,7 +32,7 @@ namespace AdventOfCode2018.Days
 				yield break;
 			}
 
-			using(var inputStream = GetInputStream())
+			using(var inputStream = Assembly.GetManifestResourceStream($"AdventOfCode2018.Days.Day{DayNumber:00}.Input.txt"))
 			using (TextReader txtReader = new StreamReader(inputStream))
 			{
 				string line;
