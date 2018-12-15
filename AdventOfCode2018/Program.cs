@@ -39,8 +39,8 @@ namespace AdventOfCode2018
 				new Days.Day25.Program()
 			};
 
-			Console.WriteLine(" * Advent of Code 208 * ");
-			Console.WriteLine("========================");
+			Console.WriteLine(" * Advent of Code 2018 * ");
+			Console.WriteLine("=========================");
 			Console.WriteLine("Processor count: {0}", Environment.ProcessorCount);
 			Console.WriteLine();
 
