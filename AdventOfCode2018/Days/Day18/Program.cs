@@ -87,11 +87,14 @@ namespace AdventOfCode2018.Days.Day18
 				y++;
 			}
 
-			var cursorPosition = new Point(Console.CursorLeft, Console.CursorTop);
-			Draw(acre, 0L);
+			//var cursorPosition = new Point(Console.CursorLeft, Console.CursorTop);
+			//Draw(acre, 0L);
+
+			var minuteAcre = new Dictionary<long, Acre>(1000);
+			var acreMinute = new Dictionary<int, long>(1000);
+			var duplicateMinutes = new List<long>();
 			for (var minute = 0L; minute < 1000000000L; minute++)
 			{
-				var landChanged = false;
 				var newAcre = new Acre();
 				foreach (var land in acre)
 				{
@@ -112,20 +115,34 @@ namespace AdventOfCode2018.Days.Day18
 								newLand = LandType.Ground;
 							break;
 					}
-					if (newLand != land.Value)
-						landChanged = true;
 					newAcre[land.Key] = newLand;
-
-
 				}
-				if (!landChanged)
-					break;
 				acre = newAcre;
-				//if (minute % 100 == 0)
-					Draw(acre, minute, cursorPosition);
+				
+
+				minuteAcre.Add(minute, acre);
+				var hash = acre.GetHashCode();
+				if (!acreMinute.TryAdd(hash, minute))
+				{
+					var previousMinute = acreMinute[hash];
+					var length = minute - previousMinute;
+					var toGo = 1000000000L - minute - 1;
+					var steps = toGo % length;
+					var newMinute = previousMinute + steps;
+
+					var acre2 = minuteAcre[newMinute];
+
+					//Draw(acre, minute);
+					//Draw(minuteAcre[previousMinute], previousMinute);
+					//Draw(acre2, newMinute);
+					return acre2.Values.Count(a => a == LandType.Trees) *
+						acre2.Values.Count(a => a == LandType.Lumberyard);
+				}
+				// Draw(acre, minute, cursorPosition);
 			}
 
-			return acre.Values.Count(a => a == LandType.Trees) * acre.Values.Count(a => a == LandType.Lumberyard);
+			return acre.Values.Count(a => a == LandType.Trees) * 
+				acre.Values.Count(a => a == LandType.Lumberyard);
 		}
 
 		private void Draw(Acre acre, long minute, Point? cursor = null)
@@ -178,12 +195,26 @@ namespace AdventOfCode2018.Days.Day18
 				}
 				return false;
 			}
+			public new int GetHashCode()
+			{
+				var array = Values.ToArray();
+				int hc = array.Length;
+				for (int i = 0; i < array.Length; ++i)
+				{
+					hc = unchecked(hc * 314159 + (int)array[i]);
+				}
+				return hc;
+			}
+			public LandType[] ToArray()
+			{
+				return Values.ToArray();
+			}
 		}
 		private enum LandType
 		{
-			Ground,
-			Trees,
-			Lumberyard
+			Ground = 1,
+			Trees = 2,
+			Lumberyard = 3
 		}
 	}
 }
