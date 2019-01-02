@@ -1,0 +1,187 @@
+﻿Register:	r0  r1  r2  r3  r4  r5
+			 1   0   0   0   0   0
+#ip 4
+ 0	addi  4 16  4		goto  1 + r4 + 16
+ 1	seti  1  7  2		r2 =  1
+ 2	seti  1  1  5		r5 =  1
+ 3	mulr  2  5  3		r3 = r2 * r5
+ 4	eqrr  3  1  3		r3 = r3 == r1 ? 1 : 0
+ 5	addr  3  4  4		goto  1 + r3 + r4		
+ 6	addi  4  1  4		goto  1 + r4 +  1
+ 7	addr  2  0  0		r0 = r2 + r0
+ 8	addi  5  1  5		r5 = r5 +  1
+ 9	gtrr  5  1  3		r3 = r5 > r1 ? 1 : 0
+10	addr  4  3  4		goto  1 + r4 + r3
+11	seti  2  7  4		goto  1 +  2
+12	addi  2  1  2		r2 = r2 +  1
+13	gtrr  2  1  3		r3 = r2 > r1 ? 1 : 0
+14	addr  3  4  4		goto  1 + r3 + r4
+15	seti  1  3  4		goto  1 +  1
+16	mulr  4  4  4		goto  1 + r4 * r4
+17	addi  1  2  1		r1 = r1 +  2
+18	mulr  1  1  1		r1 = r1 * r1
+19	mulr  4  1  1		r1 = r4 * r1
+20	muli  1 11  1		r1 = r1 * 11
+21	addi  3  3  3		r3 = r3 +  3
+22	mulr  3  4  3		r3 = r3 * r4
+23	addi  3  9  3		r3 = r3 +  9
+24	addr  1  3  1		r1 = r1 + r3
+25	addr  4  0  4		goto  1 + r4 + r0
+26	seti  0  1  4		goto  1 +  0
+27	setr  4  9  3		r3 = r4 
+28	mulr  3  4  3		r3 = r3 * r4
+29	addr  4  3  3		r3 = r4 + r3
+30	mulr  4  3  3		r3 = r4 * r3
+31	muli  3 14  3		r3 = r3 * 14
+32	mulr  3  4  3		r3 = r3 * r4
+33	addr  1  3  1		r1 = r1 + r3
+34	seti  0  6  0		r0 =  0
+35	seti  0  7  4		goto  1 +  0
+
+
+--------------------------------------------------------------------------------------------------------------
+
+Register:	r0  r1  r2  r3  r4  r5
+			 1   0   0   0   0   0
+ 
+ 0	addi  4 16  4		goto  17
+ 1	seti  1  7  2		r2 =  1
+ 2	seti  1  1  5		r5 =  1
+ 3	mulr  2  5  3		r3 = r2 * r5
+ 4	eqrr  3  1  3		r3 = r3 == r1 ? 1 : 0
+ 5	addr  3  4  4		goto  6 + r3
+ 6	addi  4  1  4		goto  8
+ 7	addr  2  0  0		r0 = r2 + r0
+ 8	addi  5  1  5		r5 = r5 +  1
+ 9	gtrr  5  1  3		r3 = r5 > r1 ? 1 : 0
+10	addr  4  3  4		goto 11 + r3
+11	seti  2  7  4		goto  3
+12	addi  2  1  2		r2 = r2 +  1
+13	gtrr  2  1  3		r3 = r2 > r1 ? 1 : 0
+14	addr  3  4  4		goto 15 + r3
+15	seti  1  3  4		goto  2
+16	mulr  4  4  4		goto 257
+17	addi  1  2  1		r1 = r1 +  2
+18	mulr  1  1  1		r1 = r1 * r1
+19	mulr  4  1  1		r1 = 19 * r1
+20	muli  1 11  1		r1 = r1 * 11
+21	addi  3  3  3		r3 = r3 +  3
+22	mulr  3  4  3		r3 = r3 * 22
+23	addi  3  9  3		r3 = r3 +  9
+24	addr  1  3  1		r1 = r1 + r3
+25	addr  4  0  4		goto  26 + r0
+26	seti  0  1  4		goto  1
+27	setr  4  9  3		r3 = 27 
+28	mulr  3  4  3		r3 = r3 * 28
+29	addr  4  3  3		r3 = 29 + r3
+30	mulr  4  3  3		r3 = 30 * r3
+31	muli  3 14  3		r3 = r3 * 14
+32	mulr  3  4  3		r3 = r3 * 32
+33	addr  1  3  1		r1 = r1 + r3
+34	seti  0  6  0		r0 =  0
+35	seti  0  7  4		goto  1
+
+--------------------------------------------------------------------------------------------------------------
+
+Line0:	goto  17;
+Line1:	r2 =  1;
+Line2:	r5 =  1;
+Line3:	r3 = r2 * r5;
+Line4:	r3 = r3 == r1 ? 1 : 0;
+Line5:	goto  6 + r3;
+Line6:	goto  8;
+Line7:	r0 = r2 + r0;
+Line8:	r5 = r5 +  1;
+Line9:	r3 = r5 > r1 ? 1 : 0;
+Line10:	goto 11 + r3;
+Line11:	goto  3;
+Line12:	r2 = r2 +  1;
+Line13:	r3 = r2 > r1 ? 1 : 0;
+Line14:	goto 15 + r3;
+Line15:	goto  2;
+Line16:	goto  257;
+Line17:	r1 = r1 +  2;
+Line18:	r1 = r1 * r1;
+Line19:	r1 = 19 * r1;
+Line20:	r1 = r1 * 11;
+Line21:	r3 = r3 +  3;
+Line22:	r3 = r3 * 22;
+Line23:	r3 = r3 +  9;
+Line24:	r1 = r1 + r3;
+Line25:	goto  26 + r0;
+Line26:	goto  1;
+Line27:	r3 = 27 ;
+Line28:	r3 = r3 * 28;
+Line29:	r3 = 29 + r3;
+Line30:	r3 = 30 * r3;
+Line31:	r3 = r3 * 14;
+Line32:	r3 = r3 * 32;
+Line33:	r1 = r1 + r3;
+Line34:	r0 =  0;
+Line35:	goto  1;
+
+--------------------------------------------------------------------------------------------------------------
+
+int r0 = 0, r1 = 0, r2 = 0, r3 = 0, r5 = 0;
+Line0: goto Line17;
+Line1: r2 = 1;
+Line2: r5 = 1;
+Line3: r3 = r2 * r5;
+if (r3 == r1)
+	goto Line7;
+Line6: goto Line8;
+Line7: r0 = r2 + r0;
+Line8: r5 = r5 + 1;
+if (r5 > r1)
+	goto Line12;
+Line11: goto Line3;
+Line12: r2 = r2 + 1;
+if (r2 > r1)
+	goto Line16;
+Line15: goto Line2;
+Line16: goto Line257;
+Line17: r1 = r1 + 2;
+Line18: r1 = r1 * r1;
+Line19: r1 = 19 * r1;
+Line20: r1 = r1 * 11;
+Line21: r3 = r3 + 3;
+Line22: r3 = r3 * 22;
+Line23: r3 = r3 + 9;
+Line24: r1 = r1 + r3;
+if (r0 == 1)
+	goto Line27;
+Line26: goto Line1;
+Line27: r3 = 27;
+Line28: r3 = r3 * 28;
+Line29: r3 = 29 + r3;
+Line30: r3 = 30 * r3;
+Line31: r3 = r3 * 14;
+Line32: r3 = r3 * 32;
+Line33: r1 = r1 + r3;
+Line34: r0 = 0;
+Line35: goto Line1;
+
+// finish!
+Line257: return r0;
+
+--------------------------------------------------------------------------------------------------------------
+
+long r0 = 1;
+long r1 = 911;
+if (r0 == 1)
+{
+	r1 = 10551311;
+	r0 = 0;
+}
+			
+for (long r2 = 1; r2 <= r1; r2++)
+{
+	for (long r5 = 1; r5 <= r1; r5++)
+	{
+		if (r2 * r5 == r1)
+		{
+			r0 += r2;
+		}
+	}
+}
+return r0;
