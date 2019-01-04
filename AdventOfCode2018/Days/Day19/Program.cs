@@ -90,7 +90,75 @@ namespace AdventOfCode2018.Days.Day19
 			// these are all the "divisors" of the number 10551311
 			// https://www.wolframalpha.com/input/?i=Sum+of+Divisors+of+10551311
 			// "bruteforce":
-			return Enumerable.Range(1, 10551311).Where(a => 10551311 % a == 0).Sum();
+			
+			// return Enumerable.Range(1, 10551311).Where(a => 10551311 % a == 0).Sum();
+
+			// rewrote  code
+			var code = @"#ip 4
+addi 4 19 4
+seti 1 7 2
+setr 1 0 5 
+gtrr 2 5 3
+addr 4 3 4
+addi 4 1 4
+addi 4 4 4
+muli 2 -1 2
+addr 5 2 5
+muli 2 -1 2
+seti 2 0 4
+gtri 5 0 3
+addr 4 3 4
+addr 0 2 0
+gtrr 2 1 3
+addr 4 3 4
+addi 4 1 4
+mulr 4 4 4
+addi 2 1 2
+seti 1 0 4
+addi 1 2 1
+mulr 1 1 1
+muli 1 19 1
+muli 1 11 1
+addi 3 3 3
+muli 3 22 3
+addi 3 9 3
+addr 1 3 1
+addr 4 0 4
+seti 0 1 4
+seti 27 9 3
+muli 3 28 3
+addi 3 29 3
+muli 3 30 3
+muli 3 14 3
+muli 3 32 3
+addr 1 3 1
+seti 0 6 0
+seti 0 7 4";
+			var ipRegister = 0;
+			var instructions = new List<(string, int, int, int)>();
+			foreach (var line in GetInputLines(code))
+			{
+				if (line.StartsWith('#'))
+				{
+					ipRegister = int.Parse(line.Substring(4));
+				}
+				else
+				{
+					var parts = line.Split(' ');
+					instructions.Add((parts[0], int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3])));
+				}
+			}
+
+
+			var register = new []{1,0,0,0,0,0};
+			while (register[ipRegister] < instructions.Count)
+			{
+				var instruction = instructions[register[ipRegister]];
+				register[instruction.Item4] = _operations[instruction.Item1](register, instruction.Item2, instruction.Item3);
+				register[ipRegister]++;
+			}
+
+			return register[0];
 		}
 	}
 }
