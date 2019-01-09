@@ -1,0 +1,36 @@
+﻿int r0=1,r1=0,r2=0,r3=0,r4=0;//,r5=0;
+Line0:	/* seti 123 0 3		*/		r3 = 123;
+Line1:	/* bani 3 456 3		*/		r3 = r3 & 456;
+Line2:	/* eqri 3 72 3		*/		/* r3 = r3==72 ? 1 : 0; */ if (r3 == 72) goto Line5;
+Line3:	/* addr 3 5 5		*/		//r5 = 3 + r3 + 1;
+Line4:	/* seti 0 0 5		*/		goto Line1;
+Line5:	/* seti 0 0 3		*/		r3 = 0;
+Line6:	/* bori 3 65536 2	*/		r2 = r3 | 65536;
+Line7:	/* seti 14070682 0 3*/		r3 = 14070682;
+Line8:	/* bani 2 255 1		*/		r1 = r2 & 255;
+Line9:	/* addr 3 1 3		*/		r3 = r3 + r1;
+Line10:	/* bani 3 16777215 3*/		r3 = r3 & 16777215;
+Line11:	/* muli 3 65899 3	*/		r3 = r3 * 65899;
+Line12:	/* bani 3 16777215 3*/		r3 = r3 & 16777215;
+Line13:	/* gtir 256 2 1		*/		/*r1 = 256 > r2 ? 1 : 0;*/ if(256 > r2) goto Line16; 
+Line14:	/* addr 1 5 5		*/		//r5 = 14 + r1 + 1;
+Line15:	/* addi 5 1 5		*/		goto Line17;
+Line16:	/* seti 27 8 5		*/		goto Line28;
+Line17:	/* seti 0 3 1		*/		r1 = 0;
+Line18:	/* addi 1 1 4		*/		r4 = r1 + 1;
+Line19:	/* muli 4 256 4		*/		r4 = r4 * 256;
+Line20:	/* gtrr 4 2 4		*/		/*r4 = r4 > r2 ? 1 : 0;*/ if(r4 > r2) goto Line23;
+Line21:	/* addr 4 5 5		*/		//r5 = r4 + 21 + 1;
+Line22:	/* addi 5 1 5		*/		goto Line24;
+Line23:	/* seti 25 8 5		*/		goto Line26;
+Line24:	/* addi 1 1 1		*/		r1 = r1 + 1;
+Line25:	/* seti 17 9 5		*/		goto Line18;
+Line26:	/* setr 1 4 2		*/		r2 = r1;
+Line27:	/* seti 7 5 5		*/		goto Line8;
+Line28:	/* eqrr 3 0 1		*/		/* r1 = r3 == r0 ? 1 : 0;*/ if(r3 == r0) goto Line31;
+Line29:	/* addr 1 5 5		*/		//r5 = 29 + r1 + 1;
+Line30:	/* seti 5 4 5		*/		goto Line6;
+Line31: return r0;
+
+------------------------------------------------------------------------------------
+
