@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace AdventOfCode2019
 #endif
 			while (true)
 			{
-				Console.Write("Enter day number 1-25 (q to quit) [{0}]: ", defaultInput);
+				Console.Write("Enter day number 1-25 (q to quit) (i to test Intcode) [{0}]: ", defaultInput);
 				var dayNumber = 0;
 				if (input == null)
 					input = Console.ReadLine();
@@ -63,7 +64,11 @@ namespace AdventOfCode2019
 					dayNumber = defaultInput;
 				if (input == "q")
 					break;
-				if (dayNumber != 0 || int.TryParse(input, out dayNumber))
+				if (input == "i")
+				{
+					TestIntcode();
+				}
+				else if (dayNumber != 0 || int.TryParse(input, out dayNumber))
 				{
 					if (dayNumber == -1)
 						break;
@@ -86,12 +91,40 @@ namespace AdventOfCode2019
 						Console.WriteLine("Day not found");
 				}
 				else
-					Console.WriteLine("Invalid day");
+				{
+					Console.WriteLine("Invalid input");
+				}
+
+
 				Console.WriteLine();
 
 				input = null;
 			}
 		}
-	}
 
+		private static void TestIntcode()
+		{
+			Console.WriteLine("** Testing Intcode **");
+			
+			var day2 = new Days.Day02.Program();
+			Console.WriteLine("[Day 2]");
+			Console.WriteLine(" - Part1 " + Test((int)day2.RunPart1(), 4090689));
+			Console.WriteLine(" - Part2 " + Test((int)day2.RunPart2(), 7733));
+
+			var day5 = new Days.Day05.Program();
+			Console.WriteLine("[Day 5]");
+			Console.WriteLine(" - Part1 " + Test((string)day5.RunPart1(), "0000000009025675"));
+			Console.WriteLine(" - Part2 " + Test((string)day5.RunPart2(), "11981754"));
+
+			var day7 = new Days.Day07.Program();
+			Console.WriteLine("[Day 7]");
+			Console.WriteLine(" - Part1 " + Test((int)day7.RunPart1(), 46248));
+			Console.WriteLine(" - Part2 " + Test((int)day7.RunPart2(), 54163586));
+		}
+
+		private static string Test<T>(T result, T expected)
+		{
+			return EqualityComparer<T>.Default.Equals(expected, result) ? $"Passed! Expected: {expected} Got: {result}" : $"Failed! Expected: {expected} Got: {result}";
+		}
+	}
 }
