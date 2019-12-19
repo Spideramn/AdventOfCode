@@ -9,7 +9,7 @@ namespace AdventOfCode2019.Days.Day07
 
 		public override object RunPart1()
 		{
-			var code = GetInputString().Split(',').Select(int.Parse).ToArray();
+			var code = GetInputString().Split(',').Select(long.Parse).ToArray();
 			return GetPermutations(new[] {0, 1, 2, 3, 4})
 				.Select(perm => CalculateThrustersValue1(code, perm[0], perm[1], perm[2], perm[3], perm[4]))
 				.Max();
@@ -17,15 +17,15 @@ namespace AdventOfCode2019.Days.Day07
 
 		public override object RunPart2()
 		{
-			var code = GetInputString().Split(',').Select(int.Parse).ToArray();
+			var code = GetInputString().Split(',').Select(long.Parse).ToArray();
 			return GetPermutations(new[] {5, 6, 7, 8, 9})
 				.Select(perm => CalculateThrustersValue2(code, perm[0], perm[1], perm[2], perm[3], perm[4]))
 				.Max();
 		}
 		
-		private static int CalculateThrustersValue1(int[] code, int phaseA, int phaseB, int phaseC, int phaseD, int phaseE)
+		private static long CalculateThrustersValue1(long[] code, int phaseA, int phaseB, int phaseC, int phaseD, int phaseE)
 		{
-			var signal = 0;
+			var signal = 0L;
 			signal = new Intcode(code, phaseA, signal).Run().First();
 			signal = new Intcode(code, phaseB, signal).Run().First();
 			signal = new Intcode(code, phaseC, signal).Run().First();
@@ -33,7 +33,7 @@ namespace AdventOfCode2019.Days.Day07
 			return new Intcode(code, phaseE, signal).Run().First();
 		}
 		
-		private static int CalculateThrustersValue2(int[] code, int phaseA, int phaseB, int phaseC, int phaseD, int phaseE)
+		private static long CalculateThrustersValue2(long[] code, int phaseA, int phaseB, int phaseC, int phaseD, int phaseE)
 		{
 			var ampA = new Intcode(code, phaseA);
 			var ampB = new Intcode(code, phaseB);
@@ -47,7 +47,7 @@ namespace AdventOfCode2019.Days.Day07
 			using (var enumD = ampD.Run().GetEnumerator())
 			using (var enumE = ampE.Run().GetEnumerator())
 			{
-				var signal = 0;
+				var signal = 0L;
 				while (true)
 				{
 					ampA.AddInput(signal);

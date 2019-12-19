@@ -8,16 +8,14 @@ namespace AdventOfCode2019.Days.Day05
 
 		public override object RunPart1()
 		{
-			var input = GetInputString().Split(',').Select(int.Parse).ToArray();
-			var program = new Intcode(input);
-			return string.Concat(program.AddInput(1).Run());
+			var input = GetInputString().Split(',').Select(long.Parse).ToArray();
+			return string.Join(',', new Intcode(input, 1).Run());
 		}
 
 		public override object RunPart2()
 		{
-			var input = GetInputString().Split(',').Select(int.Parse).ToArray();
-			var program = new Intcode(input);
-			return string.Concat(program.AddInput(5).Run());
+			var input = GetInputString().Split(',').Select(long.Parse).ToArray();
+			return string.Join(',', new Intcode(input, 5).Run());
 		}
 	}
 }

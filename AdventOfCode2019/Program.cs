@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -108,23 +107,28 @@ namespace AdventOfCode2019
 			
 			var day2 = new Days.Day02.Program();
 			Console.WriteLine("[Day 2]");
-			Console.WriteLine(" - Part1 " + Test((int)day2.RunPart1(), 4090689));
-			Console.WriteLine(" - Part2 " + Test((int)day2.RunPart2(), 7733));
+			Console.WriteLine(" - Part1 " + Test(day2.RunPart1().ToString(), "4090689"));
+			Console.WriteLine(" - Part2 " + Test(day2.RunPart2().ToString(), "7733"));
 
 			var day5 = new Days.Day05.Program();
 			Console.WriteLine("[Day 5]");
-			Console.WriteLine(" - Part1 " + Test((string)day5.RunPart1(), "0000000009025675"));
-			Console.WriteLine(" - Part2 " + Test((string)day5.RunPart2(), "11981754"));
+			Console.WriteLine(" - Part1 " + Test(day5.RunPart1().ToString(), "0,0,0,0,0,0,0,0,0,9025675"));
+			Console.WriteLine(" - Part2 " + Test(day5.RunPart2().ToString(), "11981754"));
 
 			var day7 = new Days.Day07.Program();
 			Console.WriteLine("[Day 7]");
-			Console.WriteLine(" - Part1 " + Test((int)day7.RunPart1(), 46248));
-			Console.WriteLine(" - Part2 " + Test((int)day7.RunPart2(), 54163586));
+			Console.WriteLine(" - Part1 " + Test(day7.RunPart1().ToString(), "46248"));
+			Console.WriteLine(" - Part2 " + Test(day7.RunPart2().ToString(), "54163586"));
+
+			var day9 = new Days.Day09.Program();
+			Console.WriteLine("[Day 9]");
+			Console.WriteLine(" - Part1 " + Test(day9.RunPart1().ToString(), "2465411646"));
+			Console.WriteLine(" - Part2 " + Test(day9.RunPart2().ToString(), "69781"));
 		}
 
-		private static string Test<T>(T result, T expected)
+		private static string Test(string result, string expected)
 		{
-			return EqualityComparer<T>.Default.Equals(expected, result) ? $"Passed! Expected: {expected} Got: {result}" : $"Failed! Expected: {expected} Got: {result}";
+			return string.Equals(expected, result, StringComparison.Ordinal) ? "Passed!" : $"!!! Failed !!! Expected: {expected} Got: {result}";
 		}
 	}
 }

@@ -1,91 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode2019
 {
 	internal class Intcode
 	{
+		private long _pointer;
+		private long _relativeBase;
 		private bool _isRunning;
-		private readonly int[] _memory;
-		private readonly Queue<int> _inputs;
+		private readonly Dictionary<long, long> _memory;
+		private readonly Queue<long> _inputs = new Queue<long>();
 
-		public Intcode(int[] code, params int[] initialInput)
+		public Intcode(IEnumerable<long> code, params long[] initialInput)
 		{
-			_memory = new int[code.Length];
-			Array.Copy(code, _memory, code.Length);
-
-			_inputs = new Queue<int>(initialInput);
+			_memory = code.Select((v, k) => new {k, v}).ToDictionary(arg => (long) arg.k, arg => (long) arg.v);
+			AddInput(initialInput);
 		}
 
-		public Intcode AddInput(params int[] input)
+		public Intcode AddInput(params long[] input)
 		{
 			foreach (var i in input)
 				_inputs.Enqueue(i);
 			return this;
 		}
-
-		public IEnumerable<int> Run()
+		
+		public IEnumerable<long> Run()
 		{
 			if (_isRunning)
 				throw new Exception("Allready running!");
 			_isRunning = true;
 
-			var pointer = 0;
 			while (true)
 			{
-				var instruction = _memory[pointer++];
+				var instruction = GetValue(_pointer++);
 				var opCode = instruction % 100;
 				switch (opCode)
 				{
 					// add -> p3 = p1 + p2
 					case 1:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
-							var param2 = _memory[pointer++];
-							var mode2 = (instruction / 1000) % 10;
-							var value2 = mode2 == 0 ? _memory[param2] : param2;
-
-							var param3 = _memory[pointer++];
-
-							_memory[param3] = value1 + value2;
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							SetParamValueAndIncreasePointer(3, instruction, value1 + value2);
 							break;
 						}
 
 					// multiply -> p3 = p1 * p2
 					case 2:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
-							var param2 = _memory[pointer++];
-							var mode2 = (instruction / 1000) % 10;
-							var value2 = mode2 == 0 ? _memory[param2] : param2;
-
-							var param3 = _memory[pointer++];
-
-							_memory[param3] = value1 * value2;
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							SetParamValueAndIncreasePointer(3, instruction, value1 * value2);
 							break;
 						}
 
 					// set -> p1 = input
 					case 3:
 						{
-							var param1 = _memory[pointer++];
-							_memory[param1] = _inputs.Dequeue();
+							SetParamValueAndIncreasePointer(1, instruction, _inputs.Dequeue());
 							break;
 						}
 
 					// output -> output p1
 					case 4:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
 							yield return value1;
 							break;
 						}
@@ -93,77 +73,44 @@ namespace AdventOfCode2019
 					// jump-if-true ->  if p1 != 0 then pointer = p2
 					case 5:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
-							var param2 = _memory[pointer++];
-							var mode2 = (instruction / 1000) % 10;
-							var value2 = mode2 == 0 ? _memory[param2] : param2;
-
-							if (value1 != 0)
-								pointer = value2;
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							if (value1 != 0) _pointer = value2;
 							break;
 						}
 
 					// jump-if-false ->  if p1 == 0 then pointer = p2
 					case 6:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
-							if (value1 == 0)
-							{
-								var param2 = _memory[pointer];
-								var mode2 = (instruction / 1000) % 10;
-								var value2 = mode2 == 0 ? _memory[param2] : param2;
-								pointer = value2;
-							}
-							else
-							{
-								pointer++;
-							}
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							if (value1 == 0) _pointer = value2;
 							break;
 						}
 
 					// less than -> if p1 < p2 then p3 = 1 else p3 = 0
 					case 7:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
-
-							var param2 = _memory[pointer++];
-							var mode2 = (instruction / 1000) % 10;
-							var value2 = mode2 == 0 ? _memory[param2] : param2;
-
-							var param3 = _memory[pointer++];
-
-							if (value1 < value2)
-								_memory[param3] = 1;
-							else
-								_memory[param3] = 0;
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							SetParamValueAndIncreasePointer(3, instruction, value1 < value2 ? 1 : 0);
 							break;
 						}
 
 					// equals -> if p1 == p2 then p3 = 1 else p3 = 0
 					case 8:
 						{
-							var param1 = _memory[pointer++];
-							var mode1 = (instruction / 100) % 10;
-							var value1 = mode1 == 0 ? _memory[param1] : param1;
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							var value2 = GetParamValueAndIncreasePointer(2, instruction);
+							SetParamValueAndIncreasePointer(3, instruction, value1 == value2 ? 1 : 0);
+							break;
+						}
 
-							var param2 = _memory[pointer++];
-							var mode2 = (instruction / 1000) % 10;
-							var value2 = mode2 == 0 ? _memory[param2] : param2;
-
-							var param3 = _memory[pointer++];
-
-							if (value1 == value2)
-								_memory[param3] = 1;
-							else
-								_memory[param3] = 0;
+					// adjust relative base -> relativeBase += p1
+					case 9:
+						{
+							var value1 = GetParamValueAndIncreasePointer(1, instruction);
+							_relativeBase += value1;
 							break;
 						}
 
@@ -179,14 +126,55 @@ namespace AdventOfCode2019
 			}
 		}
 
-		public int GetValue(int position)
+		public long GetValue(long position)
 		{
-			return _memory[position];
+			return _memory.TryGetValue(position, out var value) ? value : 0;
 		}
-		public Intcode SetValue(int position, int value)
+		public Intcode SetValue(long position, long value)
 		{
 			_memory[position] = value;
 			return this;
+		}
+
+		private long GetParamValueAndIncreasePointer(int paramIndex, long instruction)
+		{
+			var param = GetValue(_pointer++);
+			var mode = (instruction / (int)Math.Pow(10, 1 + paramIndex)) % 10;
+			switch (mode)
+			{
+				case 0: // position mode
+					return GetValue(param);
+
+				case 1: // immediate mode
+					return param;
+
+				case 2: // relative mode
+					return GetValue(_relativeBase + param);
+
+				default:
+					throw new Exception($"Unknown param mode: {mode}");
+			}
+		}
+		private void SetParamValueAndIncreasePointer(int paramIndex, long instruction, long value)
+		{
+			var param = GetValue(_pointer++);
+			var mode = (instruction / (int)Math.Pow(10, 1 + paramIndex)) % 10;
+			switch (mode)
+			{
+				case 0: // position mode
+					_memory[param] = value;
+					return;
+
+				case 1: // immediate mode
+					throw new Exception("Writing is not allowed in immediate mode");
+
+				case 2: // relative mode
+					_memory[_relativeBase + param] = value;
+					return;
+
+				default:
+					throw new Exception($"Unknown param mode: {mode}");
+			}
 		}
 	}
 }
