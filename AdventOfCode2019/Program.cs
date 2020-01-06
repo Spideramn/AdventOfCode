@@ -129,6 +129,11 @@ namespace AdventOfCode2019
 			Console.WriteLine("[Day 11]");
 			Console.WriteLine(" - Part1 " + Test(day11.RunPart1().ToString(), "1785"));
 			Console.WriteLine(" - Part2 " + Test(day11.RunPart2().ToString(), "4205"));
+
+			var day13 = new Days.Day13.Program();
+			Console.WriteLine("[Day 13]");
+			Console.WriteLine(" - Part1 " + Test(day13.RunPart1().ToString(), "301"));
+			Console.WriteLine(" - Part2 " + Test(day13.RunPart2().ToString(), "14096"));
 		}
 
 		private static string Test(string result, string expected)
