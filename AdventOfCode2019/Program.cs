@@ -106,24 +106,29 @@ namespace AdventOfCode2019
 			Console.WriteLine("** Testing Intcode **");
 			
 			var day2 = new Days.Day02.Program();
-			Console.WriteLine("[Day 2]");
+			Console.WriteLine("[Day 02]");
 			Console.WriteLine(" - Part1 " + Test(day2.RunPart1().ToString(), "4090689"));
 			Console.WriteLine(" - Part2 " + Test(day2.RunPart2().ToString(), "7733"));
 
 			var day5 = new Days.Day05.Program();
-			Console.WriteLine("[Day 5]");
+			Console.WriteLine("[Day 05]");
 			Console.WriteLine(" - Part1 " + Test(day5.RunPart1().ToString(), "0,0,0,0,0,0,0,0,0,9025675"));
 			Console.WriteLine(" - Part2 " + Test(day5.RunPart2().ToString(), "11981754"));
 
 			var day7 = new Days.Day07.Program();
-			Console.WriteLine("[Day 7]");
+			Console.WriteLine("[Day 07]");
 			Console.WriteLine(" - Part1 " + Test(day7.RunPart1().ToString(), "46248"));
 			Console.WriteLine(" - Part2 " + Test(day7.RunPart2().ToString(), "54163586"));
 
 			var day9 = new Days.Day09.Program();
-			Console.WriteLine("[Day 9]");
+			Console.WriteLine("[Day 09]");
 			Console.WriteLine(" - Part1 " + Test(day9.RunPart1().ToString(), "2465411646"));
 			Console.WriteLine(" - Part2 " + Test(day9.RunPart2().ToString(), "69781"));
+
+			var day11 = new Days.Day11.Program();
+			Console.WriteLine("[Day 11]");
+			Console.WriteLine(" - Part1 " + Test(day11.RunPart1().ToString(), "1785"));
+			Console.WriteLine(" - Part2 " + Test(day11.RunPart2().ToString(), "4205"));
 		}
 
 		private static string Test(string result, string expected)
