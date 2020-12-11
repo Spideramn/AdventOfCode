@@ -12,7 +12,7 @@ namespace AdventOfCode2020.Days
 		public virtual object RunPart1() => "NOTHING";
 		public virtual object RunPart2() => "NOTHING";
 
-		private static Assembly Assembly => typeof(Day).GetTypeInfo().Assembly;
+		private static Assembly Assembly => Assembly.GetExecutingAssembly();
 
 		protected string GetInputString(string debugOverride = null)
 		{
